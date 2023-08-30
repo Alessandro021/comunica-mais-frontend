@@ -1,12 +1,20 @@
 import "./Auth.css";
 import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+
+//Redux
+import { register, reset } from "../../slices/authSlice";
 
 const Register = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setconfirmPassword] = useState("");
+
+    const dispath = useDispatch();
+
+    const {loading, error} = useSelector((state) => state.auth);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -19,7 +27,12 @@ const Register = () => {
         };
 
         // console.log(user);
+        dispath(register(user));
     };
+
+    useEffect(() => {
+        dispath(reset());
+    },[dispath]);
     return (
         <div id="register">
             <h2>Comunica+</h2>
