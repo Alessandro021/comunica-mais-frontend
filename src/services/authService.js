@@ -10,12 +10,12 @@ const register = async (data) => {
             .then((response) => response.json())
             .catch((err) => err);
 
-        if(res){
+        if(!res.error){
             localStorage.setItem("user", JSON.stringify(res));
         }
 
         return res;
-        
+
     } catch (error) {
         console.log("Error");
     }
