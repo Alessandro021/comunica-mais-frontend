@@ -7,14 +7,14 @@ const initialState = {
     user: user ? user : null,
     error: false,
     sucess: false,
-    loding: false,
+    loading: false,
 };
 
 //REGISTRO D USUSARIO E LOGIN
 export const register = createAsyncThunk("auth/register", 
     async (user, thunkAPI) => {
         const data = await authService.register(user);
-
+        // console.log(data);
         if(data.errors){
             return thunkAPI.rejectWithValue(data.errors[0]);
         }
@@ -28,22 +28,22 @@ export const authSlice = createSlice({
     initialState,
     reducers: {
         reset: (state) => {
-            state.loding = false;
+            state.loading = false;
             state.error = false;
             state.sucess = false;
-        }
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(register.pending, (state) => {
-            state.loding = true;
-            state.error = false;
+            state.loading = true;
+            state.error = null;
         }).addCase(register.fulfilled, (state, action) => {
-            state.loding = false;
+            state.loading = false;
             state.sucess = true;
             state.error = null;
             state.user = action.payload;
         }).addCase(register.rejected, (state, action) => {
-            state.loding = false;
+            state.loading = false;
             state.error = action.payload;
             state.user = null;
         });

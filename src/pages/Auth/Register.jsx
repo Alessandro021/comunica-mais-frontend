@@ -2,6 +2,7 @@ import "./Auth.css";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import Message from "../../components/Message/Message";
 
 //Redux
 import { register, reset } from "../../slices/authSlice";
@@ -29,10 +30,11 @@ const Register = () => {
         // console.log(user);
         dispath(register(user));
     };
-
+    // console.log(loading);
     useEffect(() => {
         dispath(reset());
     },[dispath]);
+
     return (
         <div id="register">
             <h2>Comunica+</h2>
@@ -42,7 +44,9 @@ const Register = () => {
                 <input type="email" placeholder="E-mail" value={email} onChange={e => setEmail(e.target.value)} />
                 <input type="password" placeholder="Senha" value={password} onChange={e => setPassword(e.target.value)} />
                 <input type="password" placeholder="Confirmar senha" value={confirmPassword} onChange={e => setconfirmPassword(e.target.value)} />
-                <input type="submit" value={"Cadastrar"}/>
+                {!loading && <input type="submit" value={"Cadastrar"}/>}
+                {loading && <input type="submit" value={"Aguarde..."} disabled/>}
+                {error && Object.values(error).map(err => <Message key={err} msg={err} type="error"/>)}
             </form>
             <p>Já tem conta? <Link to={"/login"}>Clique aqui.</Link></p>
         </div>
