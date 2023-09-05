@@ -7,9 +7,14 @@ const profile = async (data, token) => {
             .then((response) => response.json())
             .catch(error => error);
 
-        return res.result;
+        if(res.result){
+            return res.result;
+        } else {
+            return {errors: [{error: "Error ao acessar servidor, tente mais tarde."}]};
+        }
     } catch (error) {
         console.log(`ERROR: ${error}`);
+        return {errors: ["Error ao acessar servidor, tente mais tarde."]};
     }
 };
 
@@ -20,14 +25,19 @@ const updateProfile = async (data, token) => {
         const res = await fetch(`${api}/users`, config)
             .then((response) => response.json())
             .catch(error => error);
-            
+        
         if(res.error){
             return res;
-        } else {
+        }
+        if(res.error === false){
             return res.result;
         }
+
+        return {errors: [{error: "Error ao acessar servidor, tente mais tarde."}]};
+        
     } catch (error) {
         console.log(`ERROR: ${error}`);
+        return {errors: [{error: "Error ao acessar servidor, tente mais tarde."}]};
     }
 };
 

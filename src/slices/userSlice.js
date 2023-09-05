@@ -17,6 +17,10 @@ export const profile = createAsyncThunk("user/profile",
 
         const data = await userService.profile(user, token);
 
+        if(data.errors) {
+            return thunkAPI.rejectWithValue(data.errors[0]);
+        }
+
         return data;
     }
 );
@@ -27,7 +31,7 @@ export const updateProfile = createAsyncThunk("user/update",
         const {token} = JSON.parse(localStorage.getItem("user"));
 
         const data =  await userService.updateProfile(user, token);
-
+        
         if(data.errors) {
             return thunkAPI.rejectWithValue(data.errors[0]);
         }
@@ -53,6 +57,10 @@ export const userSlice = createSlice({
             state.success = true;
             state.error = null;
             state.user = action.payload;
+        }).addCase(profile.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+            state.user = null;
         }).addCase(updateProfile.pending, (state) => {
             state.loading = true;
             state.error = null;
@@ -65,7 +73,7 @@ export const userSlice = createSlice({
         }).addCase(updateProfile.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
-            state.user = {};
+            state.user = null;
         });
     }
 });

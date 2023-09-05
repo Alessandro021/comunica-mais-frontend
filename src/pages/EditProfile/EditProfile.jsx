@@ -92,10 +92,10 @@ const EditProfile = () => {
                     <span>Imagem de perfil:</span>
                     <span style={{textAlign: "center"}}>Clique e escolha a sua imagem</span>
                     <input type="file" accept="image/png, image/jpeg" onChange={handleFile}/>
-                    {(user.profileImage || previewImage) && (
+                    {(user?.profileImage || previewImage) && (
                         <img className="profile-image" 
-                            src={previewImage ? URL.createObjectURL(previewImage) : `${uploads}/users/${user.profileImage}`}
-                            alt={user.name}
+                            src={previewImage ? URL.createObjectURL(previewImage) : `${uploads}/users/${user?.profileImage}`}
+                            alt={user?.name}
                             width={150}
                             height={150}
                         />
