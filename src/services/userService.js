@@ -41,9 +41,30 @@ const updateProfile = async (data, token) => {
     }
 };
 
+const getUserDetails = async (id) => {
+    const config = requestConfig("GET");
+
+    try {
+        const res = await fetch(`${api}/users/${id}`, config)
+            .then(response => response.json())
+            .catch(err => err);
+        
+        if(res.error === false){
+            return res.result;
+        }
+
+        return {errors: [{error: "Error ao acessar servidor, tente mais tarde."}]};
+
+    } catch (error) {
+        console.log(`ERROR: ${error}`);
+        return {errors: [{error: "Error ao acessar servidor, tente mais tarde."}]};
+    }
+};
+
 const userService = {
     profile,
-    updateProfile
+    updateProfile,
+    getUserDetails
 };
 
 export default userService;
