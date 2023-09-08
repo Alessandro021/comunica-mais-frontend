@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 
 import {getUserDetails} from "../../slices/userSlice";
-import { publishPhoto, resetMessage, getUserPhotos, deletePhoto} from "../../slices/photoSlice";
+import { publishPhoto, resetMessage, getUserPhotos, deletePhoto, updatePhoto} from "../../slices/photoSlice";
 
 const Profile = () => {
     const {id} = useParams();
@@ -24,6 +24,10 @@ const Profile = () => {
 
     const [title, setTitle] = useState("");
     const [image, setImage] = useState("");
+
+    const [editId, seteditId] = useState("");
+    const [editImage, setEditImage] = useState("");
+    const [editTitle, setEditTitle] = useState("");
 
     const newPhotoForm = useRef();
     const editPhotoForm = useRef();
@@ -57,15 +61,51 @@ const Profile = () => {
         setTitle("");
         setTimeout(() => {
             dispatch(resetMessage());
-        }, 1500);
+        }, 2000);
     };
 
     const handleDelete = (id) => {
         dispatch(deletePhoto(id));
         setTimeout(() => {
             dispatch(resetMessage());
-        }, 1500);
+        }, 2000);
     };
+
+    const hideOrShowForms = () => {
+        newPhotoForm.current.classList.toggle("hide");
+        editPhotoForm.current.classList.toggle("hide");
+    };
+
+    const handleUpdate = (e) => {
+        e.preventDefault();
+
+        const photoData = {
+            title: editTitle,
+            id: editId,
+        };
+
+        dispatch(updatePhoto(photoData));
+
+        setTimeout(() => {
+            dispatch(resetMessage());
+        }, 2000);
+
+    };
+
+    const handleEdit = (photo) => {
+        if(editPhotoForm.current.classList.contains("hide")){
+            hideOrShowForms();
+        }
+
+        seteditId(photo.id);
+        setEditTitle(photo.title);
+        setEditImage(photo.image);
+    };
+
+    const handleCancelEdit = () => {
+        hideOrShowForms();
+    };
+
 
     if(loading){
         return <p>Carregando...</p>;
@@ -95,11 +135,29 @@ const Profile = () => {
 
                             <label>
                                 <span>Imagem:</span>
-                                <input type="file" onChange={handleFile}/>
+                                <input type="file" accept="image/png, image/jpeg, image/jpg" onChange={handleFile}/>
                             </label>
 
                             {!loadingPhoto && <input type="submit" value={"Postar"} />}
                             {loadingPhoto && <input type="submit" value={"Aguarde..."} disabled />}
+                        </form>
+                    </div>
+
+                    <div className="edit-photo hide" ref={editPhotoForm}>
+                        <p>Editando</p>
+
+                        {editImage && (
+                            <img src={`${uploads}/photos/${editImage}`} alt={editTitle} />
+                        )}
+
+                        <form onSubmit={handleUpdate}>
+                            <label>
+                                <span>Titulo para a foto:</span>
+                                <input type="text" placeholder="Insira um titulo" value={editTitle || ""} onChange={e => setEditTitle(e.target.value)}/>
+                            </label> 
+
+                            <input type="submit" value={"Atualizar"} />
+                            <button className="cancel-btn" onClick={handleCancelEdit}>Cancelar edição</button>
                         </form>
                     </div>
 
@@ -120,7 +178,7 @@ const Profile = () => {
                             {id === userAuth._id ? (
                                 <div className="actions">
                                     <Link to={`/photos${photo.image}`}><BsFillEyeFill /></Link>
-                                    <BsPencilFill />
+                                    <BsPencilFill onClick={() => handleEdit(photo)}/>
                                     <BsXLg onClick={() => handleDelete(photo.id)}/>
                                 </div>
                             ) : ( 

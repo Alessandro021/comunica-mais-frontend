@@ -91,7 +91,7 @@ const EditProfile = () => {
                 <label className="labelAvatar">
                     <span>Imagem de perfil:</span>
                     <span style={{textAlign: "center"}}>Clique e escolha a sua imagem</span>
-                    <input type="file" accept="image/png, image/jpeg" onChange={handleFile}/>
+                    <input type="file" accept="image/png, image/jpeg, image/jpg" onChange={handleFile}/>
                     {(user?.profileImage || previewImage) && (
                         <img className="profile-image" 
                             src={previewImage ? URL.createObjectURL(previewImage) : `${uploads}/users/${user?.profileImage}`}
