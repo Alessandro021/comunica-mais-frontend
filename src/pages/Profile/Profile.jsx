@@ -15,7 +15,7 @@ import { publishPhoto, resetMessage, getUserPhotos, deletePhoto, updatePhoto} fr
 
 const Profile = () => {
     const {id} = useParams();
-
+    
     const dispatch = useDispatch();
 
     const {user, loading}= useSelector((state) => state.user);
@@ -177,7 +177,7 @@ const Profile = () => {
 
                             {id === userAuth._id ? (
                                 <div className="actions">
-                                    <Link to={`/photos${photo.image}`}><BsFillEyeFill /></Link>
+                                    <Link to={`/photos/${photo.id}`}><BsFillEyeFill /></Link>
                                     <BsPencilFill onClick={() => handleEdit(photo)}/>
                                     <BsXLg onClick={() => handleDelete(photo.id)}/>
                                 </div>

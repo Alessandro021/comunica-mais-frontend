@@ -65,6 +65,35 @@ export const updatePhoto = createAsyncThunk("photo/update",
     }
 );
 
+export const getPhoto = createAsyncThunk("photo/getPhoto",
+    async(id, thunkAPI) => {
+
+        const {token} = JSON.parse(localStorage.getItem("user"));
+
+        const data = await photoService.getPhoto(id, token);
+
+        if(data.errors){
+            return thunkAPI.rejectWithValue(data.errors[0]);
+        }
+
+        return data;
+    }
+);
+
+export const like = createAsyncThunk("photo/like", 
+    async(id, thunkAPI) => {
+        const {token} = JSON.parse(localStorage.getItem("user"));
+
+        const data = await photoService.like(id, token);
+
+        if(data.errors){
+            return thunkAPI.rejectWithValue(data.errors[0]);
+        }
+
+        return data;
+    }
+);
+
 export const photoSlice = createSlice({
     name: "photo",
     initialState: initialState,
@@ -145,6 +174,41 @@ export const photoSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload;
                 state.photo = null;
+            })
+            .addCase(getPhoto.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getPhoto.fulfilled, (state, action) => {
+                state.loading = false;
+                state.success = true;
+                state.error = null;
+                state.photo = action.payload;
+            })
+            .addCase(getPhoto.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+                state.photo = null;
+            })
+            .addCase(like.fulfilled, (state, action) => {
+                state.loading = false;
+                state.success = true;
+                state.error = null;
+
+                if(state.photo.likes){
+                    state.photo.likes.push(action.payload.userId);
+                }
+                state.photos.map(photo => {
+                    if(photo.id === action.payload.photo?.photoId) {
+                        return photo.likes.push(action.payload.userId);
+                    }
+                    return photo;
+                });
+                state.message = action.payload.message;
+            })
+            .addCase(like.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
             });
     }
 });
