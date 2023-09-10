@@ -8,7 +8,7 @@ const LikeContainer = ({photo, user, handleLike}) => {
         <div className="like">
             {photo.likes && user && (
                 <>
-                    {photo?.likes.includes(user._id) ? (
+                    {photo.likes?.includes(user?._id) ? (
                         <BsHeartFill onClick={() => handleLike(photo)} />
                     ) : (
                         <BsHeart onClick={() => handleLike(photo)} />

@@ -93,6 +93,19 @@ export const like = createAsyncThunk("photo/like",
         return data;
     }
 );
+export const comment = createAsyncThunk("photo/comments",
+    async (commentData, thunkAPI) => {
+        const {token} = JSON.parse(localStorage.getItem("user"));
+
+        const data = await photoService.comments({comment: commentData.comment}, commentData.id, token);
+
+        if(data.errors){
+            return thunkAPI.rejectWithValue(data.errors[0]);
+        }
+
+        return data;
+    }
+);
 
 export const photoSlice = createSlice({
     name: "photo",
@@ -194,12 +207,11 @@ export const photoSlice = createSlice({
                 state.loading = false;
                 state.success = true;
                 state.error = null;
-
                 if(state.photo.likes){
                     state.photo.likes.push(action.payload.userId);
                 }
                 state.photos.map(photo => {
-                    if(photo.id === action.payload.photo?.photoId) {
+                    if(photo.id === action.payload.photoId) {
                         return photo.likes.push(action.payload.userId);
                     }
                     return photo;
@@ -207,6 +219,17 @@ export const photoSlice = createSlice({
                 state.message = action.payload.message;
             })
             .addCase(like.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            .addCase(comment.fulfilled, (state, action) => {
+                state.loading = false;
+                state.success = true;
+                state.error = null;
+                state.photo.comments.push(action.payload.comment);
+                state.message = action.payload.message;
+            })
+            .addCase(comment.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             });
