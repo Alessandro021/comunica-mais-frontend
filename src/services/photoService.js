@@ -185,6 +185,29 @@ const getPhotos = async(token) => {
     }
 };
 
+const searchPhotos = async (query, token) => {
+    const config = requestConfig("GET", null, token);
+
+    try {
+        const res = await fetch(`${api}/photos/search?q=${query}`, config)
+            .then(response => response.json())
+            .catch(err => err);
+
+        if(res.error) {
+            return res;
+        }
+                    
+        if(res.error === false) {
+            return res.result;
+        }
+                    
+        return {errors: [{error: "Error ao acessar servidor, tente mais tarde."}]};
+    } catch (error) {
+        console.log(`ERROR: ${error}`);
+        return {errors: [{error: "Error ao acessar servidor, tente mais tarde."}]};
+    }
+};
+
 const photoService =  {
     publishPhoto,
     getUserPhotos,
@@ -193,7 +216,8 @@ const photoService =  {
     getPhoto,
     like,
     comments,
-    getPhotos
+    getPhotos,
+    searchPhotos
 };
 
 export default photoService;
