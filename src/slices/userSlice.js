@@ -11,9 +11,9 @@ const initialState = {
 
 export const profile = createAsyncThunk("user/profile",
     async (user, thunkAPI) => {
-        // const token =  thunkAPI.getState().auth.user.token;
+        const token =  thunkAPI.getState().auth.user.token;
         
-        const {token} = JSON.parse(localStorage.getItem("user"));
+        // const {token} = JSON.parse(localStorage.getItem("user"));
 
         const data = await userService.profile(user, token);
 
@@ -27,8 +27,8 @@ export const profile = createAsyncThunk("user/profile",
 
 export const updateProfile = createAsyncThunk("user/update", 
     async (user, thunkAPI) => {
-        // const token = thunkAPI.getState().auth.user.token;
-        const {token} = JSON.parse(localStorage.getItem("user"));
+        const token = thunkAPI.getState().auth.user.token;
+        // const {token} = JSON.parse(localStorage.getItem("user"));
 
         const data =  await userService.updateProfile(user, token);
         

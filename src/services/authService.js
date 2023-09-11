@@ -10,11 +10,15 @@ const register = async (data) => {
             .then((response) => response.json())
             .catch((err) => err);
 
-        if(res.error === false){
-            localStorage.setItem("user", JSON.stringify(res.result));
+        if(res.error) {
+            return res;
         }
-
-        return res;
+    
+        if(res.error === false) {
+            return res.result;
+        }
+    
+        return {errors: [{error: "Error ao acessar servidor, tente mais tarde."}]};
 
     } catch (error) {
         console.log(`ERROR: ${error}`);
@@ -33,11 +37,18 @@ const login = async (data) => {
         const res = await fetch(`${api}/users/login`, config)
             .then(response => response.json())
             .catch(err => err);
-        if(res.error === false){
-            localStorage.setItem("user", JSON.stringify(res.result));
+
+        if(res.error) {
+            return res;
         }
 
-        return res;
+        if(res.error === false) {
+            localStorage.setItem("user", JSON.stringify(res.result));
+            return res.result;
+        }
+        
+
+        return {errors: [{error: "Error ao acessar servidor, tente mais tarde."}]};
     } catch (error) {
         console.log(`ERROR: ${error}`);
     }

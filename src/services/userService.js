@@ -7,11 +7,15 @@ const profile = async (data, token) => {
             .then((response) => response.json())
             .catch(error => error);
 
-        if(res.result){
-            return res.result;
-        } else {
-            return {errors: [{error: "Error ao acessar servidor, tente mais tarde."}]};
+        if(res.error) {
+            return res;
         }
+    
+        if(res.error === false) {
+            return res.result;
+        }
+    
+        return {errors: [{error: "Error ao acessar servidor, tente mais tarde."}]};
     } catch (error) {
         console.log(`ERROR: ${error}`);
         return {errors: ["Error ao acessar servidor, tente mais tarde."]};
@@ -49,10 +53,14 @@ const getUserDetails = async (id) => {
             .then(response => response.json())
             .catch(err => err);
         
-        if(res.error === false){
+        if(res.error) {
+            return res;
+        }
+    
+        if(res.error === false) {
             return res.result;
         }
-
+    
         return {errors: [{error: "Error ao acessar servidor, tente mais tarde."}]};
 
     } catch (error) {

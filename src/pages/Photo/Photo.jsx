@@ -65,13 +65,13 @@ const Photo = () => {
                 {message &&  <Message msg={message} type="success"/>}
             </div>
             <div className="comments">
-                <h3>Comentários: ({photo.comments?.length})</h3>
+                <h3>Comentários: ({photo?.comments?.length})</h3>
                 <form onSubmit={handleComment}>
                     <input type="text" placeholder="Insira o seu comentário" value={commentText || ""} onChange={e => setCommentText(e.target.value)} />
                     <input type="submit" value={"Enviar"} />
                 </form>
-                {photo.comments?.length === 0 && <p>Não há comentários.</p>}
-                {photo.comments?.map(comment => (
+                {photo?.comments?.length === 0 && <p>Não há comentários.</p>}
+                {photo?.comments?.map(comment => (
                     <div key={comment.id} className="comment">
                         <div className="author">
                             {comment.userImage && (

@@ -22,6 +22,9 @@ const Profile = () => {
     const {user: userAuth}= useSelector((state) => state.auth);
     const {photos, loading: loadingPhoto, message: messagePhoto, error: errorPhoto} = useSelector(state => state.photo);
 
+    // console.log(userAuth);
+    // console.log(id);
+
     const [title, setTitle] = useState("");
     const [image, setImage] = useState("");
 
@@ -157,8 +160,10 @@ const Profile = () => {
                             </label> 
 
                             <input type="submit" value={"Atualizar"} />
-                            <button className="cancel-btn" onClick={handleCancelEdit}>Cancelar edição</button>
+                            {/* <button className="cancel-btn" onClick={handleCancelEdit}>Cancelar edição</button> */}
+
                         </form>
+                        <button className="cancel cancel-btn" onClick={handleCancelEdit}>Cancelar edição</button>
                     </div>
 
                     {errorPhoto &&  <Message msg={Object.values(errorPhoto)} type="error"/>}
@@ -182,7 +187,7 @@ const Profile = () => {
                                     <BsXLg onClick={() => handleDelete(photo.id)}/>
                                 </div>
                             ) : ( 
-                                <Link to={`/photos${photo.image}`} className="btn">Ver</Link>
+                                <Link to={`/photos/${photo.id}`} className="btn">Ver</Link>
                             )}
                         </div>
                     ))}

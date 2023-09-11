@@ -13,6 +13,8 @@ const initialState = {
 export const publishPhoto = createAsyncThunk("photo/publish",
     async (photo, thunkAPI) => {
         const {token} = JSON.parse(localStorage.getItem("user"));
+        // const token = thunkAPI.getState().auth.user.token;
+
 
         const data = await photoService.publishPhoto(photo, token);
         if(data.errors){
@@ -26,6 +28,8 @@ export const publishPhoto = createAsyncThunk("photo/publish",
 export const getUserPhotos = createAsyncThunk("photo/userphotos",
     async(id, thunkAPI) => {
         const {token} = JSON.parse(localStorage.getItem("user"));
+        // const token = thunkAPI.getState().auth.user.token;
+
 
         const data = await photoService.getUserPhotos(id, token);
 
@@ -41,6 +45,8 @@ export const deletePhoto = createAsyncThunk("photo/delete",
     async (id, thunkAPI) => {
 
         const {token} = JSON.parse(localStorage.getItem("user"));
+        // const token = thunkAPI.getState().auth.user.token;
+
         const data = await photoService.deletePhoto(id, token);
 
         if(data.errors){
@@ -54,6 +60,8 @@ export const deletePhoto = createAsyncThunk("photo/delete",
 export const updatePhoto = createAsyncThunk("photo/update",
     async(photoData, thunkAPI) => {
         const {token} = JSON.parse(localStorage.getItem("user"));
+        // const token = thunkAPI.getState().auth.user.token;
+
 
         const data = await photoService.updatePhoto({title: photoData.title}, photoData.id, token);
 
@@ -69,6 +77,8 @@ export const getPhoto = createAsyncThunk("photo/getPhoto",
     async(id, thunkAPI) => {
 
         const {token} = JSON.parse(localStorage.getItem("user"));
+        // const token = thunkAPI.getState().auth.user.token;
+
 
         const data = await photoService.getPhoto(id, token);
 
@@ -83,6 +93,8 @@ export const getPhoto = createAsyncThunk("photo/getPhoto",
 export const like = createAsyncThunk("photo/like", 
     async(id, thunkAPI) => {
         const {token} = JSON.parse(localStorage.getItem("user"));
+        // const token = thunkAPI.getState().auth.user.token;
+
 
         const data = await photoService.like(id, token);
 
@@ -96,6 +108,8 @@ export const like = createAsyncThunk("photo/like",
 export const comment = createAsyncThunk("photo/comments",
     async (commentData, thunkAPI) => {
         const {token} = JSON.parse(localStorage.getItem("user"));
+        // const token = thunkAPI.getState().auth.user.token;
+
 
         const data = await photoService.comments({comment: commentData.comment}, commentData.id, token);
 
@@ -110,6 +124,8 @@ export const comment = createAsyncThunk("photo/comments",
 export const getPhotos = createAsyncThunk("photo/getAll",
     async (_, thunkAPI) => {
         const {token} = JSON.parse(localStorage.getItem("user"));
+        // const token = thunkAPI.getState().auth.user.token;
+
         const data = await photoService.getPhotos(token);
 
         if(data.errors){
@@ -123,6 +139,8 @@ export const getPhotos = createAsyncThunk("photo/getAll",
 export const searchPhotos = createAsyncThunk("photo/search",
     async(query, thunkAPI) => {
         const {token} = JSON.parse(localStorage.getItem("user"));
+        // const token = thunkAPI.getState().auth.user.token;
+
 
         const data = await photoService.searchPhotos(query, token);
 

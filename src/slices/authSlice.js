@@ -14,7 +14,6 @@ const initialState = {
 export const register = createAsyncThunk("auth/register", 
     async (user, thunkAPI) => {
         const data = await authService.register(user);
-        // console.log(data);
         if(data.errors){
             return thunkAPI.rejectWithValue(data.errors[0]);
         }
@@ -25,7 +24,7 @@ export const register = createAsyncThunk("auth/register",
 
 //LOGOUT
 export const logout = createAsyncThunk("auth/logout",
-    async() => {
+    async () => {
         await authService.logout();
     });
 
